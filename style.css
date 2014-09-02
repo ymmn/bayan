@@ -5,21 +5,19 @@
   width: 100%;
   height: 50%;
 }
-
 #bayan-textarea {
   display: block;
   margin-left: auto;
   margin-right: auto;
-  overflow:hidden;
+  overflow: hidden;
   font: 80px Helvetica, sans-serif;
   /* vertical-align:top; */
-  top:70%;
-  border:none;
-  resize:none;
+  top: 70%;
+  border: none;
+  resize: none;
   width: 90%;
   height: 50%;
 }
-
 html {
   margin-left: 20px;
   margin-right: 20px;
@@ -35,11 +33,34 @@ a {
   text-decoration: none;
 }
 /* `:focus` is linked to `:hover` for basic accessibility */
+
 a:hover,
 a:focus {
   text-decoration: underline;
 }
-
 .highlighted {
+  background-color: orange !important;
+}
+.passed {
+  background-color: green !important;
+}
+.sheet {
+  position: relative;
+  height: 200px;
+  margin-bottom: 15px;
+  width: 100%;
+  background-color: #ddd;
+}
+.sheet-note {
+  margin: 1px;
   background-color: yellow;
+  position: absolute;
+  text-align: center;
+}
+.sheet-bar {
+  background-color: #1b1b1b;
+  width: 5px;
+  height: 100%;
+  position: absolute;
+  left: 100px;
 }

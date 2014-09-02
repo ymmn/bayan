@@ -1,0 +1,8 @@
+<div class="sheet">
+  <div class="sheet-bar"></div>
+  <div style="position:relative; left:{{sheetX}}px;">
+    <div ng-repeat="note in sheetMusic" ng-class="{passed: note.passed, highlighted: (note.isNow && ! note.passed)}" class="sheet-note" style="width: {{note.width}}px; top: {{note.y*8 - 30}}px; left: {{note.x}}px;">
+      {{note.char}}
+    </div>
+  </div>
+</div>
