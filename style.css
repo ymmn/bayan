@@ -52,6 +52,7 @@ a:focus {
   background-color: #ddd;
 }
 .sheet-note {
+  border-radius: 8px;
   margin: 1px;
   background-color: yellow;
   position: absolute;
