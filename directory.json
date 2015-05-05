@@ -1,0 +1,10 @@
+[{
+  "name": "Super Mario Song",
+  "filename": "mario.abc",
+  "music": "mario.mp3",
+  "bpm": 191
+}, {
+  "name": "Mortal Kombat",
+  "filename": "mortalkombat.abc",
+  "bpm": 180
+}]
