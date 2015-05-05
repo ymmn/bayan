@@ -39,4 +39,15 @@
   <br>
 </body>
 
+<script src="js/base64-binary.js"></script>
+<script src="js/midi.js"></script>
+<script>
+  MIDI.loadPlugin({
+    instrument: "acoustic_grand_piano",
+    onsuccess: function() {
+      console.log('MIDI callback!');
+    }
+  });
+</script>
+
 </html>
