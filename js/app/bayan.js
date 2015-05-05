@@ -65,7 +65,15 @@ define(['lib/teoria', 'lib/subcollider', 'lib/keyboard', 'lib/timbre', 'lib/ease
       this.layout = LAYOUT_BL;
       this.stage = new createjs.Stage(canvas);
       this.keyboard = {};
-      this.synth = new Synth();
+      // this.synth = new Synth();
+      this.synth = {
+        noteOn: function(note) {
+          MIDI.noteOn(0, note, 127) ;
+        },
+        noteOff: function(note) {
+          MIDI.noteOff(0, note, 127) ;
+        }
+      };
       this.origWidth = window.innerWidth;
       this.origHeight = window.innerHeight * 0.5;
       this.createKeyboard();
@@ -218,7 +226,6 @@ define(['lib/teoria', 'lib/subcollider', 'lib/keyboard', 'lib/timbre', 'lib/ease
         }
       }
     }
-
 
     Bayan.prototype.resize = function(w, h) {
       var ow = this.origWidth;
