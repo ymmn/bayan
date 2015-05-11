@@ -20,14 +20,13 @@
  * }
  *
  */
-window.SongPlayer = (function() {
+window.SongPlayer = function(song, synth) {
 
   var bpm;
   var notes;
   var firstBeatAt;
   var currentlyPlayingNotes;
   var nextStartingNoteIndex;
-  var synth;
   var playingNotesDict;
   var isStopped;
 
@@ -42,13 +41,9 @@ window.SongPlayer = (function() {
     }
   };
 
-  var tick = function() {
-    if (isStopped) {
-      return;
-    }
+  var p = {};
 
-    var beatIndex = calculateBeatIndex();
-
+  p.tick = function(beatIndex) {
     /* check for starting notes */
     while (nextStartingNoteIndex < notes.length) {
       var upcomingNote = notes[nextStartingNoteIndex];
@@ -78,35 +73,18 @@ window.SongPlayer = (function() {
         currentlyPlayingNotes.splice(currentlyPlayingNotes.indexOf(playingNote), 1);
       }
     }
-
-    /* check if song ended */
-    var songEnded = (nextStartingNoteIndex === notes.length) && (currentlyPlayingNotes.length) === 0;
-    if (songEnded) {
-      // done!
-    } else {
-      window.requestAnimationFrame(tick);
-    }
-
   };
 
-  var p = {};
-
-  p.playSong = function(song) {
+  p.init = function() {
     isStopped = false;
     firstBeatAt = null;
     bpm = song.bpm;
     notes = song.notes;
-    synth = new window.Synth();
     nextStartingNoteIndex = 0;
     currentlyPlayingNotes = [];
     playingNotesDict = {};
     for (var i = 0; i < notes.length; i++) {
       playingNotesDict[notes[i].noteNumber] = 0;
-    }
-    if (song.offset) {
-      window.setTimeout(tick, song.offset);
-    } else {
-      tick();
     }
   };
 
@@ -120,6 +98,8 @@ window.SongPlayer = (function() {
     }
   };
 
+  p.init();
+
   return p;
 
-})();
+};

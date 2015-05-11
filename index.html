@@ -26,6 +26,7 @@
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.1/angular.min.js"></script>
   <script src="js/parser.js"></script>
   <script src="js/angular-app.js"></script>
+  <script src="js/song-player.js"></script>
   <script src="js/abc-beat-time-convertor.js"></script>
   <script src="js/app/make-sheet-music.js"></script>
   <script data-main="js/app" src="js/require.js"></script>
@@ -57,8 +58,10 @@
 <script src="js/midi.js"></script>
 <script>
   MIDI.loadPlugin({
-    instrument: "acoustic_grand_piano",
+    instruments: [ "acoustic_grand_piano", "acoustic_guitar_nylon" ],
     onsuccess: function() {
+      MIDI.programChange(0, 0); // set channel 0 to piano
+      MIDI.programChange(1, 24); // set channel 1 to guitar
       console.log('MIDI callback!');
     }
   });
