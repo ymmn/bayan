@@ -7,10 +7,15 @@ app.directive('sheetMusic', function() {
     controller: ['$scope', '$window', '$interval',
       function($scope, $window, $interval) {
 
+        var firstBeatAt,
+            pressedKey,
+            songPlayer,
+            OFFSET_IN_PIXELS = 100;
+
         $scope.beatWidth = 50;
-        $.get('directory.json').success(function(songs) {
-          $scope.songs = songs;
-        });
+        $scope.sheetIndex = 0;
+        $scope.sheetX = 0;
+        $scope.sheetMusic = [];
 
         var reloadSong = function() {
           var song = $scope.song;
@@ -25,41 +30,30 @@ app.directive('sheetMusic', function() {
             $scope.isPlaying = false;
             $scope.abcSong = abcSong;
             $scope.sheetMusic = window.makeSheetMusic(abcSong);
+
+            songPlayer = window.SongPlayer(
+              window.convertAbcToBeatTimeFormat(window.parser(abcSong)),
+              // TODO(abdul) copy pasted from bayan.js
+              {
+                noteOn: function(note) {
+                  MIDI.noteOn(1, note, 127) ;
+                },
+                noteOff: function(note) {
+                  MIDI.noteOff(1, note, 127) ;
+                }
+              }
+            );
+
             $scope.sheetMusic.map(function(a) {
               a.width *= $scope.beatWidth;
               a.width -= 5;
               a.x *= $scope.beatWidth;
-              a.x += 200;
+              a.x += OFFSET_IN_PIXELS;
             });
             $scope.$apply();
           });
         };
 
-        $scope.$watch('song', reloadSong);
-        $scope.$watch('bpm', reloadSong);
-
-        $scope.play = function() {
-          firstBeatAt = null;
-          $scope.isPlaying = true;
-        };
-
-        $scope.sheetIndex = 0;
-        $scope.sheetX = 0;
-        $scope.sheetMusic = [];
-
-        var pressedKey = null;
-        $window.onkeydown = function(e) {
-          var c = Bayan.keyForEvent(e);
-          pressedKey = c;
-        };
-
-        $window.onkeyup = function(e) {
-          var c = Bayan.keyForEvent(e);
-          pressedKey = null;
-        };
-
-        var firstBeatAt = null;
-        $scope.bpm = 190;
         var calculateBeatIndex = function() {
           var t = (new Date()).getTime();
           if (firstBeatAt === null) {
@@ -71,11 +65,13 @@ app.directive('sheetMusic', function() {
           }
         };
 
-        $interval(function() {
+        var tick = function() {
           if (!$scope.isPlaying) {
             return;
           }
           var curBeat = calculateBeatIndex();
+          songPlayer.tick(curBeat);
+
           $scope.sheetX = -1 * (curBeat * $scope.beatWidth);
           for (var i = 0; i < $scope.sheetMusic.length; i++) {
             var note = $scope.sheetMusic[i];
@@ -83,8 +79,31 @@ app.directive('sheetMusic', function() {
             note.isNow = (absPos <= 105 && (absPos + note.width) >= 100);
             note.passed = note.passed || (note.isNow && note.char === pressedKey);
           }
-        }, 30);
+        };
 
+        $scope.play = function() {
+          firstBeatAt = null;
+          $scope.isPlaying = true;
+        };
+
+        $window.onkeydown = function(e) {
+          var c = Bayan.keyForEvent(e);
+          pressedKey = c;
+        };
+
+        $window.onkeyup = function(e) {
+          var c = Bayan.keyForEvent(e);
+          pressedKey = null;
+        };
+
+        $.get('directory.json').success(function(songs) {
+          $scope.songs = songs;
+        });
+
+        $scope.$watch('song', reloadSong);
+        $scope.$watch('bpm', reloadSong);
+
+        $interval(tick, 30);
       }
     ]
   };
