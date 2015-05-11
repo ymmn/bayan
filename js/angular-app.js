@@ -98,6 +98,7 @@ app.directive('sheetMusic', function() {
 
         $.get('directory.json').success(function(songs) {
           $scope.songs = songs;
+          $scope.song = songs[0];
         });
 
         $scope.$watch('song', reloadSong);
