@@ -22,6 +22,7 @@
   <title>bayan</title>
 
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.1/angular.min.js"></script>
   <script src="js/parser.js"></script>
   <script src="js/angular-app.js"></script>
@@ -32,11 +33,24 @@
 </head>
 
 <body ng-app="BayanGameApp">
+  <div style="margin-bottom: 10px" class="row">
+    <div class="col-md-6">
+      <select ng-model="song" ng-options="song as song.name for song in songs" class="form-control"> </select>
+    </div>
+    <div class="col-md-4">
+      <div class="input-group">
+        <div class="input-group-addon">BPM</div>
+        <input class="form-control" ng-model="bpm" placeholder="bpm" type="number" />
+      </div>
+    </div>
+    <div class="col-md-2">
+      <button ng-click="play()" class="btn btn-block">START</button>
+    </div>
+  </div>
+
   <sheet-music></sheet-music>
   <canvas id="bayan"></canvas>
-  <textarea id="bayan-textarea" rows="3"></textarea>
-  <a href="/bayan/about.html">about</a>
-  <br>
+  <textarea style="display: none" id="bayan-textarea" rows="3"></textarea>
 </body>
 
 <script src="js/base64-binary.js"></script>

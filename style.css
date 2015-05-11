@@ -57,6 +57,7 @@ a:focus {
   background-color: yellow;
   position: absolute;
   text-align: center;
+  font-size: 24px;
 }
 .sheet-bar {
   background-color: #1b1b1b;
