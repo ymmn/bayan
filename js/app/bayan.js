@@ -61,10 +61,10 @@ define(['lib/teoria', 'lib/subcollider', 'lib/keyboard', 'lib/timbre', 'lib/ease
       this.lastKeyUp = 'backspace';
       this.canvas = canvas;
       this.textArea = textArea;
-      this.octave = 5;
       this.layout = LAYOUT_BL;
       this.stage = new createjs.Stage(canvas);
       this.keyboard = {};
+      if (!window.curOctave) window.curOctave = 5;
       // this.synth = new Synth();
       this.synth = {
         noteOn: function(note) {
@@ -95,7 +95,8 @@ define(['lib/teoria', 'lib/subcollider', 'lib/keyboard', 'lib/timbre', 'lib/ease
       if (midiNumber === undefined) {
         return -1;
       }
-      midiNumber = midiNumber + this.octave * 12;
+      // TODO(abdul) do not rely on globalvar
+      midiNumber = midiNumber + window.curOctave * 12;
       return midiNumber;
     }
 

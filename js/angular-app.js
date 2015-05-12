@@ -10,6 +10,7 @@ app.directive('sheetMusic', function() {
         var firstBeatAt,
             pressedKey,
             songPlayer,
+            SHEET_MUSIC_DIR = 'song-sheets',
             OFFSET_IN_PIXELS = 100;
 
         $scope.beatWidth = 50;
@@ -22,17 +23,19 @@ app.directive('sheetMusic', function() {
 
           if (!song) return;
 
-          if (song.bpm !== undefined) {
-            $scope.bpm = song.bpm;
-          }
+          $.get(SHEET_MUSIC_DIR + '/' + song.filename).success(function(abcSong) {
+            var octave = 5;
+            if (abcSong.octave) {
+              octave = abcSong.octave;
+            }
+            window.curOctave = octave;
 
-          $.get(song.filename).success(function(abcSong) {
+            $scope.bpm = abcSong.bpm;
             $scope.isPlaying = false;
-            $scope.abcSong = abcSong;
-            $scope.sheetMusic = window.makeSheetMusic(abcSong);
+            $scope.sheetMusic = window.makeSheetMusic(abcSong, octave);
 
             songPlayer = window.SongPlayer(
-              window.convertAbcToBeatTimeFormat(window.parser(abcSong)),
+              abcSong,
               // TODO(abdul) copy pasted from bayan.js
               {
                 noteOn: function(note) {

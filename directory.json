@@ -1,10 +1,10 @@
 [{
   "name": "Super Mario Song",
-  "filename": "mario.abc",
-  "music": "mario.mp3",
-  "bpm": 191
+  "filename": "mario.json"
 }, {
-  "name": "Mortal Kombat",
-  "filename": "mortalkombat.abc",
-  "bpm": 180
+  "name": "Moonlight Sonata",
+  "filename": "moonlight-sonata.json"
+}, {
+ "name": "Mortal Kombat",
+  "filename": "mortal-kombat.json"
 }]

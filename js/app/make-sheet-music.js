@@ -1,4 +1,4 @@
-window.makeSheetMusic = function(abcSong) {
+window.makeSheetMusic = function(beatTimeSong, octave) {
 
   var KEY_TO_MIDI_NUMBER = {
     'q': 0,
@@ -45,14 +45,13 @@ window.makeSheetMusic = function(abcSong) {
     '\'': 31
   };
 
-  var beatTimeSong = window.convertAbcToBeatTimeFormat(window.parser(abcSong));
   var notes = beatTimeSong.notes;
 
   var midiNumberToBayanKey = {};
 
   var keys = Object.keys(KEY_TO_MIDI_NUMBER);
   for (var i = 0; i < keys.length; i++) {
-    var midiNumber = 60 + KEY_TO_MIDI_NUMBER[keys[i]];
+    var midiNumber = (12 * octave) + KEY_TO_MIDI_NUMBER[keys[i]];
     var key = keys[i];
     midiNumberToBayanKey[midiNumber] = key;
   }
@@ -63,7 +62,7 @@ window.makeSheetMusic = function(abcSong) {
     sheetMusic.push({
       char: midiNumberToBayanKey[note.noteNumber],
       x: note.start,
-      y: note.noteNumber - 60,
+      y: note.noteNumber - (12 * octave),
       width: note.end - note.start
     });
   }
